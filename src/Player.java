@@ -8,33 +8,42 @@ public class Player {
     private final double MOVE_AMT = 8.0;
     private BufferedImage right;
     private BufferedImage left;
+    private BufferedImage deadRight;
+    private BufferedImage deadLeft;
     private double xCoord;
     private double yCoord;
+    private BufferedImage healthImg;
     private int health;
-    private boolean alive;
+    private int score;
+    private int scoreInc;
     private int difficulty;
     private boolean facingRight;
 
-    public Player(String imageRight, String imageLeft, String difficulty) {
-        xCoord = 50;
+    public Player(String imageRight, String imageLeft, String deadR, String deadL, String difficulty) {
+        xCoord = 550;
         facingRight = true;
-        alive = true;
+        score = 0;
         if (difficulty.equals("h")) {
             health = 1;
             yCoord = 495;
+            scoreInc = 3;
         }
         else if (difficulty.equals("m")){
-            health = 3;
+            health = 2;
             yCoord = 565;
+            scoreInc = 2;
         }
         else if (difficulty.equals("e")) {
-            health = 5;
+            health = 3;
             yCoord = 465;
+            scoreInc = 1;
         }
         try {
             right = ImageIO.read(new File(imageRight));
             left = ImageIO.read(new File(imageLeft));
-            healthImg = ImageIO.read(new File());
+            deadRight = ImageIO.read(new File(deadR));
+            deadLeft = ImageIO.read(new File(deadL));
+            healthImg = ImageIO.read(new File("src/Health.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -51,12 +60,28 @@ public class Player {
     public int getHealth() {
         return health;
     }
+
+    public BufferedImage getHealthImg() {
+        return healthImg;
+    }
+
     public boolean getAlive() {
-        return alive;
+        if (health != 0) {
+            return true;
+        }
+        return false;
     }
 
     public void loseHealth() {
         health--;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void enemySlain() {
+        score += scoreInc;
     }
 
     public void faceRight() {
@@ -93,18 +118,28 @@ public class Player {
     }
 
     public BufferedImage getPlayerImage() {
-        if (facingRight) {
-            return right;
+        if (getAlive()) {
+            if (facingRight) {
+                return right;
+            }
+            else {
+                return left;
+            }
         }
         else {
-            return left;
+            if (facingRight) {
+                return deadRight;
+            }
+            else {
+                return deadLeft;
+            }
         }
     }
 
     public Rectangle playerRect() {
         int imageHeight = getPlayerImage().getHeight();
         int imageWidth = getPlayerImage().getWidth();
-        Rectangle rect = new Rectangle((int) xCoord, (int) yCoord, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle((int) xCoord + 20, (int) yCoord, 120, 90);
         return rect;
     }
 }

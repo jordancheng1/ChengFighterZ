@@ -16,18 +16,18 @@ public class Enemy {
     public Enemy(String difficulty) {
         int spawn = (int) (Math.random() * 2);
         if (spawn == 0) {
-            xCoord = 25;
+            xCoord = -100;
             leftSide = true;
             facingRight = true;
         }
         else {
-            xCoord = 1200;
+            xCoord = 1255;
             leftSide = false;
             facingRight = false;
         }
         if (difficulty.equals("h")) {
-            yCoord = 495;
-            MOVE_AMT = 8.0;
+            yCoord = 445;
+            MOVE_AMT = 7.0;
             try {
                 right = ImageIO.read(new File("src/EnemyHard.png"));
                 left = ImageIO.read(new File("src/EnemyHardLeft.png"));
@@ -37,7 +37,7 @@ public class Enemy {
             }
         }
         else if (difficulty.equals("m")){
-            yCoord = 565;
+            yCoord = 510;
             MOVE_AMT = 6.0;
             try {
                 right = ImageIO.read(new File("src/EnemyMedium.png"));
@@ -48,7 +48,7 @@ public class Enemy {
             }
         }
         else if (difficulty.equals("e")) {
-            yCoord = 465;
+            yCoord = 435;
             MOVE_AMT = 4.0;
             try {
                 right = ImageIO.read(new File("src/EnemyEasy.png"));
@@ -83,6 +83,7 @@ public class Enemy {
     public boolean facingRight() {
         return facingRight;
     }
+
     public BufferedImage getImage() {
         if (leftSide) {
             return right;
@@ -90,10 +91,14 @@ public class Enemy {
         return left;
     }
 
+    public boolean getDirection() {
+        return facingRight;
+    }
+
     public Rectangle enemyRect() {
         int imageHeight = getImage().getHeight();
         int imageWidth = getImage().getWidth();
-        Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle(xCoord + 30, yCoord, imageWidth  - 50, imageHeight);
         return rect;
     }
 }
