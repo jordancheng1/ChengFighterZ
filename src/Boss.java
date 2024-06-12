@@ -46,7 +46,7 @@ public class Boss {
             catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            health = 25;
+            health = 20;
             yCoord = 100;
         }
     }
